@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16.1-alpine3.18
+    restart: always
+    environment:
+      POSTGRES_DB: "weather_db"
+      POSTGRES_USER: "pguser"
+      POSTGRES_PASSWORD: "12345"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "6433:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U pguser -d weather_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_PORT: "5432"
+      DB_NAME: "weather_db"
+      DB_USER: "pguser"
+      DB_PASSWORD: "12345"
+      DB_HOST: db
+    volumes:
+      - .:/app
+    ports:
+      - "5083:5083"  # Соответствует порту приложения Flask
+      - "8443:8443"
+    command: >
+      sh -c "python run.py & python -m flask run --port=5083 --debug"
+
+volumes:
+  pg_data:
