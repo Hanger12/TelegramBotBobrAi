@@ -9,9 +9,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def start(update: Update, context: CallbackContext) -> None:
-    await update.message.reply_text("Добро пожаловать в бота для проверки погоды! Этот бот создан в качестве теста "
-                                    "для компании BobrAi., воспользуйтесь командами /weather <город> для отображения "
-                                    "погоды по указанному городу, /setcity <город> для сохранения города по умолчанию")
+    await update.message.reply_text("Добро пожаловать в бот для проверки погоды!\n"
+                                    "Этот бот разработан как тестовый проект для компании BobrAi.\n"
+                                    "Чтобы получить информацию о погоде в конкретном городе, используйте команду "
+                                    "/weather <город>.\n"
+                                    "Для сохранения города по умолчанию воспользуйтесь командой /setcity <город>.")
 
 
 async def weather(update: Update, context: CallbackContext) -> None:
